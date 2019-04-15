@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+
+var parameters = new URL(window.location).searchParams;
+var callbackURL = parameters.get('callbackURL');
+var callbackvalue;
+
+function submitbtn() {
+  var name = document.getElementById("fname").value;
+  var email = document.getElementById("email").value;
+  var password = document.getElementById("password").value; 
+ 
+ var obj = { Name: name, Email: email, Password: password }; //The Object which will be send to the skill.
+  callbackvalue = obj;
+  sendCallBack(callbackURL,callbackvalue);
+}
+
+function sendCallBack(cbUrl, cbData) {
+    var cbDataVal = JSON.stringify({outputfromWeb: cbData});     
+    var settings = {
+	  "async": true,
+	  "crossDomain": true,
+	  "url": cbUrl,
+	  "method": "POST",
+	  "headers": {
+	     "accept": "application/json"
+	  },
+	  "processData": false,
+	  "data": cbDataVal
+	}
+	$.ajax(settings).done(function (response) {
+	  console.log(response);
+	});
+}
+</script>
+
+</head>
+<body>
+
+	<!-- HTML page design goes here. You can change it as per your design-->
+	<table style="width:100%; margin-top: 1%">
+		<tr>
+			<td style="width: 5%">Name:</td>
+			<td><input type="text" name="fname" id="fname"></td>
+		</tr>
+		<tr>
+			<td>Email:</td>
+			<td><input type="text" name="email" id="email"></td>
+		</tr>
+		<tr>
+			<td>Password:</td>
+			<td><input type="password" name="fname" id="password"></td>
+		</tr>
+	</table>
+
+ <button onclick="submitbtn()" style= "margin-left:10%; margin-top: 2%">Submit</button>
+
+
+</body>
+</html>
